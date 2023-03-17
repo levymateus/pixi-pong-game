@@ -45,7 +45,7 @@ function handler(ball) {
   players.forEach((player) => {
     const isCollide = intersects(ball, player)
 
-    if (isCollide && player.id === 'player' && collider && collider.id !== 'player') {
+    if (isCollide && player.id === 'player' && collider?.id !== 'player') {
       ball.speed.y = -speed.y;
       ball.speed.x = random(-speed.x, speed.x);
 
@@ -58,7 +58,7 @@ function handler(ball) {
       player.speed.x += player.score.count * dificult;
     }
 
-    if (isCollide && player.id === 'npcplayer' && collider && collider.id !== 'npcplayer') {
+    if (isCollide && player.id === 'npcplayer' && collider?.id !== 'npcplayer') {
       ball.speed.y = speed.y;
       ball.speed.x = random(-speed.x, speed.x);
     }
