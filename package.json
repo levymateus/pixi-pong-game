@@ -1,0 +1,15 @@
+{
+  "name": "pixi-pong",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "nom-events": "^1.0.3",
+    "parcel-bundler": "^1.12.5",
+    "pixi.js": "^7.2.0"
+  },
+  "scripts": {
+    "dev": "parcel index.html --open",
+    "build": "parcel build index.html --target browser --no-minify"
+  }
+}

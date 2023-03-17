@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Pong</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div id="app">
+      <div id="ui" class="ui backdrop">
+        <div id="score" class="score">
+          Score: <span id="score-value" class="score-value">0</span>
+        </div>
+        <div id="menu" class="menu flex-container">
+          <h1>Welcome to PixiPong!</h1>
+          <h3>You best score: <span id="best-score-value">0</span></h3>
+          <ul class="menu-list flex-container">
+            <li class="flex-item">
+              <button id="menu-item-resume" name="menu-item-resume">Resume game</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
