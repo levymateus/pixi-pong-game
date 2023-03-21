@@ -23,6 +23,6 @@ export class Score extends PubSub {
   }
 
   getBestScore() {
-    return Number(localStorage.getItem('pixi-pong-best-score')) || 0;
+    return Number(localStorage.getItem('pixi-pong-best-score') || 0);
   }
 }

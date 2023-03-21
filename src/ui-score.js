@@ -20,7 +20,7 @@ export class UIScore extends LitElement {
   constructor() {
     super();
     this.value = 0;
-    this.bestScore = 0;
+    this.bestScore = score.getBestScore();
     this.classes = { hidden: true };
     this.handleScoreIncrement = value => {
       this.value = value;
