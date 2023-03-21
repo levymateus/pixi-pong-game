@@ -1,7 +1,6 @@
 import { appWidth } from "./app";
 import Keyboard from "./keyboard";
 import Platform from "./platform";
-import Score from "./score";
 
 export default class Player extends Platform {
   constructor(x, y) {
@@ -9,12 +8,6 @@ export default class Player extends Platform {
     this._name = 'unknown';
     this.speed.x = 3.5;
     this.speed.y = 0.0;
-    this.score = new Score(this._name);
-  }
-
-  set name(name) {
-    this._name = name;
-    this.score = new Score(name);
   }
 
   update(delta) {

@@ -1,1 +1,2 @@
-import "./game/game"
+import "./ui"
+import "./game"

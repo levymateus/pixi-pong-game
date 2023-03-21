@@ -1,4 +1,4 @@
-import app, { appWidth, appHeight, paused, pause, menu } from "./app";
+import app, { appWidth, appHeight, appPause } from "./app";
 import Keyboard from "./keyboard";
 import NPCPlayer from "./npcplayer";
 import Player from "./player";
@@ -7,19 +7,23 @@ import intersects from "./intersects";
 import { ObservablePoint } from "pixi.js";
 import Vector2 from "./vector";
 import { random } from "./utils";
+import { Score } from "./score";
 
 let collider = null;
 let isGameOver = false;
+
+export const score = new Score(0);
 
 export function gameover() {
   isGameOver = true;
 }
 
-export function resume() {
-  isGameOver = false;
-}
+appPause.subscribe('enable', () => {
+  if (isGameOver) {
+    isGameOver = false;
+  }
+});
 
-const dificult = 0.01;
 const speed = new Vector2(3.0, 4.0);
 
 const player = new Player(appWidth / 2, appHeight - 30);
@@ -49,13 +53,7 @@ function handler(ball) {
       ball.speed.y = -speed.y;
       ball.speed.x = random(-speed.x, speed.x);
 
-      player.score.add(ball.value);
-      player.score.render();
-
-      speed.x += player.score.count * dificult;
-      speed.y += player.score.count * dificult;
-
-      player.speed.x += player.score.count * dificult;
+      score.increment();
     }
 
     if (isCollide && player.id === 'npcplayer' && collider?.id !== 'npcplayer') {
@@ -79,10 +77,8 @@ function handler(ball) {
 
   if (!isGameOver && (ball.y >= appHeight || ball.y <= 0)) {
 
-    menu.open();
     gameover();
-    pause();
-    player.score.save();
+    appPause.from(player).enable();
 
     ball.x = appWidth / 2;
     ball.y = appHeight/ 2;
@@ -97,8 +93,7 @@ function handler(ball) {
     player.speed.x = 3.5;
     player.x = appWidth / 2;
 
-    player.score.reset();
-    player.score.render();
+    score.from(player).reset();
     collider = null;
 
   }
@@ -118,14 +113,14 @@ app.ticker.add(function (delta) {
   Keyboard.update();
 
   balls.forEach((b) => {
-    if (!paused) {
+    if (!appPause.value) {
       b.update(delta);
     }
     b.render();
   });
 
   players.forEach((p) => {
-    if (!paused) {
+    if (!appPause.value) {
       p.update(delta);
     }
     p.render();
