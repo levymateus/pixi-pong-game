@@ -9,8 +9,9 @@ import Vector2 from "./vector";
 import { random } from "./utils";
 import { Score } from "./score";
 
-let collider = null;
 let isGameOver = false;
+
+const dificultCoef = 0.25;
 
 export const score = new Score(0);
 
@@ -44,7 +45,17 @@ ball.speed.y = speed.y;
 const balls = [ball];
 const players = [player, player2];
 
+function observeBalls() {
+  balls.forEach(ball =>  {
+    ball.position = new ObservablePoint(() => handler(ball), 'position', ball.x, ball.y)
+  });
+}
+
+observeBalls();
+
 function handler(ball) {
+
+  let collider = null;
 
   players.forEach((player) => {
     const isCollide = intersects(ball, player)
@@ -53,7 +64,11 @@ function handler(ball) {
       ball.speed.y = -speed.y;
       ball.speed.x = random(-speed.x, speed.x);
 
-      score.increment();
+      score.increment(ball.value);
+      speed.x += dificultCoef;
+      speed.y += dificultCoef;
+      player.speed.x += dificultCoef;
+      player.speed.y += dificultCoef;
     }
 
     if (isCollide && player.id === 'npcplayer' && collider?.id !== 'npcplayer') {
@@ -86,7 +101,6 @@ function handler(ball) {
     ball.speed.y = speed.y;
     ball.speed.x = 0;
 
-
     speed.x = 3.0;
     speed.y = 4.0;
 
@@ -104,9 +118,6 @@ function handler(ball) {
 
 }
 
-balls.forEach(ball =>  {
-  ball.position = new ObservablePoint(() => handler(ball), 'position', ball.x, ball.y)
-})
 
 app.ticker.add(function (delta) {
 

@@ -9,8 +9,8 @@ export class Score extends PubSub {
     }
   }
 
-  increment() {
-    this.value += 1;
+  increment(value) {
+    this.value += value || 1;
     if (this.value > this.getBestScore()) {
       localStorage.setItem('pixi-pong-best-score', this.value);
     }
