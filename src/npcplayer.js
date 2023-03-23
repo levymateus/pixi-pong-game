@@ -7,5 +7,7 @@ export default class NPCPlayer extends Platform {
     this.speed.y = 1;
   }
 
-  update() {}
+  update() {
+    // code...
+  }
 }
