@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
+import Game from "./main";
 import { classMap } from 'lit/directives/class-map.js';
-import { score } from './game';
 
 export class UIScore extends LitElement {
   static properties = {};
@@ -20,14 +20,14 @@ export class UIScore extends LitElement {
   constructor() {
     super();
     this.value = 0;
-    this.bestScore = score.getBestScore();
-    this.classes = { hidden: true };
+    this.bestScore = Game.score.getBestScore();
+    this.classes = { hidden: false };
     this.handleScoreIncrement = value => {
       this.value = value;
       if (this.value) {
         this.classes.hidden = false;
       }
-      this.bestScore = score.getBestScore();
+      this.bestScore = Game.score.getBestScore();
       this.requestUpdate();
     }
     this.handleScoreReset = () => {
@@ -38,14 +38,14 @@ export class UIScore extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    score.subscribe('increment', this.handleScoreIncrement);
-    score.subscribe('reset', this.handleScoreReset);
+    Game.score.subscribe('increment', this.handleScoreIncrement);
+    Game.score.subscribe('reset', this.handleScoreReset);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    score.unsubscribe('increment', this.handleScoreIncrement);
-    score.unsubscribe('reset', this.handleScoreReset);
+    Game.score.unsubscribe('increment', this.handleScoreIncrement);
+    Game.score.unsubscribe('reset', this.handleScoreReset);
   }
 
   render() {

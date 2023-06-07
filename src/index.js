@@ -1,2 +1,7 @@
 import "./ui"
-import "./game"
+import "./assets"
+import Game from "./main"
+
+window.onload = function() {
+  Game.play();
+}

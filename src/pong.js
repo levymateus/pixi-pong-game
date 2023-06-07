@@ -1,19 +1,21 @@
 import { Circle, Graphics } from "pixi.js";
-import app from "./app";
+import { random } from "./utils";
 import Vector2 from "./vector";
+import Game from "./main";
 
-class Ball extends Circle {
-  constructor({ x, y, radius = 20, color = '#ffff' }) {
+class Pong extends Circle {
+  constructor({ id, x, y, speed = new Vector2(0, 0), radius = 20, color = '#ffff' }) {
     super(x, y, radius);
+    this.id = id;
     this.position = new Vector2(x, y);
-    this.speed = new Vector2(0, 0);
+    this.speed = speed;
     this.gr = new Graphics();
     this.color = color;
     this.energy = 0.8;
     this.visible = true;
     this.collides = null;
     this.value = 5;
-    app.stage.addChild(this.gr);
+    Game.app.stage.addChild(this.gr);
   }
 
   move(x, y) {
@@ -41,8 +43,13 @@ class Ball extends Circle {
   }
 
   update(delta) {
-    this.move(this.speed.x * delta, this.speed.y * delta)
+    this.move(this.speed.x * delta, this.speed.y * delta);
+  }
+
+  onCollide() {
+    this.speed.y = this.speed.y * -1;
+    this.speed.x = random(-3, 3);
   }
 }
 
-export default Ball;
+export default Pong;

@@ -1,6 +1,6 @@
-import PubSub from "./lib/pubsub";
+import PubSub from "./pubsub";
 
-export class Score extends PubSub {
+export default class Score extends PubSub {
   constructor(value) {
     super();
     this.value = value;
@@ -23,6 +23,6 @@ export class Score extends PubSub {
   }
 
   getBestScore() {
-    return Number(localStorage.getItem('pixi-pong-best-score') || 0);
+    return parseInt(localStorage.getItem('pixi-pong-best-score')) || 0;
   }
 }

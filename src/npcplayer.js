@@ -1,4 +1,6 @@
 import Platform from "./platform";
+import { sound } from "@pixi/sound";
+import Game from "./main";
 
 export default class NPCPlayer extends Platform {
   constructor(x, y) {
@@ -8,6 +10,10 @@ export default class NPCPlayer extends Platform {
   }
 
   update() {
-    // code...
+   
+  }
+
+  onCollide() {
+    sound.play("hanging");
   }
 }

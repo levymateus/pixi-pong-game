@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { appPause } from './app';
+import Game from "./main";
 
 export class UIMainMenu extends LitElement {
   static properties = {
@@ -74,22 +74,21 @@ export class UIMainMenu extends LitElement {
 
   connectedCallback(){
     super.connectedCallback();
-    this.handleOpen = () => {
-      this.open();
-    };
-    this.handleClose = (_, notifier) => {
-      if (notifier !== this) {
-        this.close();
+    this.handleClose = (pause, notifier) => {
+      if (pause) {
+        this.open();
+      } else {
+        this.classes.open = false;
+        this.classes.closed = !this.classes.open;
+        this.requestUpdate();
       }
     };
-    appPause.subscribe('enable', this.handleOpen);
-    appPause.subscribe('disable', this.handleClose);
+    Game.app.pause.subscribe(this.handleClose);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    appPause.unsubscribe('enable', this.handleOpen);
-    appPause.unsubscribe('disable', this.handleClose);
+    Game.app.pause.unsubscribe(this.handleClose);
   }
 
   open() {
@@ -101,7 +100,7 @@ export class UIMainMenu extends LitElement {
   close() {
     this.classes.open = false;
     this.classes.closed = !this.classes.open;
-    appPause.from(this).disable();
+    Game.app.pause.from(this).setState(false);
     this.requestUpdate();
   }
 
