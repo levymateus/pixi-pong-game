@@ -64,4 +64,8 @@ export default class XboxController {
         }
       }
     }
+
+    vibrate(effect, options) {
+      this.gamepad.vibrationActuator.playEffect(effect, options)
+    }
 }

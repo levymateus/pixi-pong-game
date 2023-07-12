@@ -21,8 +21,12 @@ class GamepadInput {
 
   static isPressed(...keys) {
     const xbox = GamepadInput.controllers.get(GamepadInput.XBOX_GAMEPAD_KEY);
-    if (xbox) return keys.some((key) => xbox.isPressed(key));
-    return false;
+    return keys.some((key) => xbox?.isPressed(key));
+  }
+
+  static vibrate(effect, options) {
+    const xbox = GamepadInput.controllers.get(GamepadInput.XBOX_GAMEPAD_KEY);
+    xbox?.vibrate(effect, options);
   }
 }
 

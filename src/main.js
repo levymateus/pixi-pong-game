@@ -103,11 +103,24 @@ class Game {
 
     Game.app.ticker.add(function() {
       Game.keyboard.update();
-      Game.gamepad.update();
-      if (Game.keyboard.isKeyDown('Escape') || Game.gamepad.isPressed('options2')) {
+      
+      if (Game.keyboard.isKeyDown('Escape')) {
         Game.app.pause.setState(true);
       }
-      if (Game.keyboard.isKeyDown('Enter') || Game.gamepad.isPressed('A')) {
+      
+      if (Game.keyboard.isKeyDown('Enter')) {
+        Game.app.pause.setState(false);
+      }
+    });
+    
+    Game.app.ticker.add(function() {
+      Game.gamepad.update();
+      
+      if (Game.gamepad.isPressed('options2')) {
+        Game.app.pause.setState(true);
+      }
+      
+      if (Game.gamepad.isPressed('A')) {
         Game.app.pause.setState(false);
       }
     });

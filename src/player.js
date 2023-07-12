@@ -35,5 +35,11 @@ export default class Player extends Paddle {
     this.speed.x += 0.01;
     this.speed.y += 0.01;
     sound.play("hanging");
+    Game.gamepad.vibrate("dual-rumble", {
+      startDelay: 0,
+      duration: 200,
+      weakMagnitude: 0.1,
+      strongMagnitude: 0.5,
+    });
   }
 }
