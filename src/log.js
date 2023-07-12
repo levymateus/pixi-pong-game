@@ -1,8 +1,8 @@
-const isDev = true
+const isDev = () => localStorage.getItem('dev') ? true : false;
 
 class Log {
   static info(...args) {
-    if (isDev) {
+    if (isDev()) {
       console.log(...args);
     }
   }
