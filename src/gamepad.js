@@ -1,40 +1,29 @@
-const haveEvents = "ongamepadconnected" in window;
+import Log from "./log";
+import XboxController from "./xbox-controller";
 
-class Gamepad {
-  constructor() {
-    this.gamepad = null;
-    window.addEventListener("gamepadconnected", this.onConnect);
-  }
-
-  onConnect(conn) {
-    this.gamepad = conn.gamepad;
-    window.requestAnimationFrame(() => this.update());
-  }
-
-  update() {
-    if (haveEvents) {
-      this.scan();
+class GamepadInput {
+  
+  static XBOX_GAMEPAD_KEY = 'xbox'
+  
+  static controllers = new Map();
+  
+  static scan() {
+    function connect() {
+      GamepadInput.controllers.set(GamepadInput.XBOX_GAMEPAD_KEY, new XboxController());
+      Log.info(GamepadInput.controllers.get(GamepadInput.XBOX_GAMEPAD_KEY) ? 'Xbox gamepad is connected' : '');
     }
-
-    if (!this.gamepad) {
-      return;
-    }
-
-    this.gamepad.buttons.forEach((button) => {
-      const isPressed = button === 1.0;
-      if (isPressed) {
-        console.log("button is pressed");
-      }
-    });
-
-    window.requestAnimationFrame(() => this.update());
+    window.addEventListener("gamepadconnected", connect);
   }
 
-  scan() {
-    console.log("scan gamepads");
+  static update() {
+    GamepadInput.controllers.get(GamepadInput.XBOX_GAMEPAD_KEY)?.scan();
+  }
+
+  static isPressed(...keys) {
+    const xbox = GamepadInput.controllers.get(GamepadInput.XBOX_GAMEPAD_KEY);
+    if (xbox) return keys.some((key) => xbox.isPressed(key));
+    return false;
   }
 }
 
-const gamepad = new Gamepad();
-
-export default gamepad;
+export default GamepadInput;

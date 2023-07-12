@@ -1,6 +1,6 @@
 import { Application, BlurFilter } from "pixi.js";
 import KeyboardInput from "./keyboard";
-import Gamepad from "./gamepad";
+import GamepadInput from "./gamepad";
 import NPCPlayer from "./npcplayer";
 import Player from "./player";
 import Pong from "./pong";
@@ -71,7 +71,7 @@ class Game {
   static app = new App();
   static scene = new Scene();
   static keyboard = KeyboardInput;
-  static gamepad = Gamepad;
+  static gamepad = GamepadInput;
   static systems = Sys;
   static score = new Score(0);
 
@@ -95,6 +95,7 @@ class Game {
     }));
 
     Game.systems.init();
+    Game.gamepad.scan();
 
     Game.app.ticker.add(function(delta) {
       Game.scene.render(delta);
@@ -102,10 +103,11 @@ class Game {
 
     Game.app.ticker.add(function() {
       Game.keyboard.update();
-      if (Game.keyboard.isKeyDown('Escape')) {
+      Game.gamepad.update();
+      if (Game.keyboard.isKeyDown('Escape') || Game.gamepad.isPressed('options2')) {
         Game.app.pause.setState(true);
       }
-      if (Game.keyboard.isKeyDown('Enter')) {
+      if (Game.keyboard.isKeyDown('Enter') || Game.gamepad.isPressed('A')) {
         Game.app.pause.setState(false);
       }
     });
@@ -122,7 +124,10 @@ class Game {
   static stop() {
     Game.app.ticker.remove(Game.scene.render);
   }
-}
 
+  static pause() {
+    Game.app.pause.setState(true);
+  }
+}
 
 export default Game;

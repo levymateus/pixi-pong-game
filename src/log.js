@@ -1,7 +1,10 @@
+const isDev = true
 
 class Log {
   static info(...args) {
-    console.log(...args);
+    if (isDev) {
+      console.log(...args);
+    }
   }
 }
 

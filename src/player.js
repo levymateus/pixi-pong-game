@@ -1,4 +1,3 @@
-import Keyboard from "./keyboard";
 import Game from "./main";
 import Paddle from "./paddle";
 import { sound } from "@pixi/sound";
@@ -13,14 +12,14 @@ export default class Player extends Paddle {
 
   update(delta) {
     if (
-      Keyboard.isKeyDown("KeyD", "ArrowRight") &&
+      (Game.keyboard.isKeyDown("KeyD", "ArrowRight") || Game.gamepad.isPressed("RT")) &&
       this.x + this.width / 2 <= Game.app.view.width
     ) {
       this.move(this.speed.x * delta, 0);
     }
 
     if (
-      Keyboard.isKeyDown("KeyA", "ArrowLeft") &&
+      (Game.keyboard.isKeyDown("KeyA", "ArrowLeft") || Game.gamepad.isPressed("LT")) &&
       this.x - this.width / 2 >= 0
     ) {
       this.move(this.speed.x * delta * -1, 0);
