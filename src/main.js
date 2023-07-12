@@ -1,5 +1,6 @@
 import { Application, BlurFilter } from "pixi.js";
 import KeyboardInput from "./keyboard";
+import Gamepad from "./gamepad";
 import NPCPlayer from "./npcplayer";
 import Player from "./player";
 import Pong from "./pong";
@@ -7,7 +8,6 @@ import Sys from "./systems";
 import State from "./state";
 import Vector2 from "./vector";
 import Score from "./score";
-import Log from "./log";
 
 class Scene {
   constructor() {
@@ -71,6 +71,7 @@ class Game {
   static app = new App();
   static scene = new Scene();
   static keyboard = KeyboardInput;
+  static gamepad = Gamepad;
   static systems = Sys;
   static score = new Score(0);
 

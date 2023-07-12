@@ -2,8 +2,8 @@ import { Graphics, Rectangle } from "pixi.js";
 import Vector2 from "./vector";
 import Game from "./main";
 
-export default class Platform extends Rectangle {
-  constructor({ id, x, y, width, height, color = '#fff' }) {
+export default class Paddle extends Rectangle {
+  constructor({ id, x, y, width, height, color = "#fff" }) {
     super(x, y, width, height);
     this.id = id;
     this.gr = new Graphics();
@@ -24,9 +24,9 @@ export default class Platform extends Rectangle {
       this.x - this.width / 2,
       this.y - this.height / 2,
       this.width,
-      this.height,
+      this.height
     );
-    this.gr.endFill()
+    this.gr.endFill();
   }
 
   render() {
