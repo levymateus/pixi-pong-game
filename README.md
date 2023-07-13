@@ -4,6 +4,8 @@ A simple Pong game write with pixi.js lib.
 ## TODO :green_book:
 Todo list for the game.
 
+:white_check_mark: Smothed player paddle move.
+
 :white_check_mark: Sound effects (ball collide player paddle)
 
 :black_square_button: Enhanced sound effects.
