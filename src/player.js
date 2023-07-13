@@ -1,29 +1,53 @@
 import Game from "./main";
 import Paddle from "./paddle";
 import { sound } from "@pixi/sound";
+import Vector2 from "./vector";
 
 export default class Player extends Paddle {
+  
+  static MAX_VELOCITY = new Vector2(8.0, 0);
+  static FRICTION_VEC = new Vector2(0.08, 0);
+
   constructor(x, y) {
     super({ id: "player", x, y, width: 120, height: 30, color: "#3443eb" });
     this._name = "unknown";
-    this.speed.x = 3.5;
-    this.speed.y = 0.0;
+    this.speed.x = 3.0;
+    this.velocity = new Vector2(0, 0);
+    this.direction = new Vector2(0, 0);
   }
 
   update(delta) {
-    if (
-      (Game.keyboard.isKeyDown("KeyD", "ArrowRight") || Game.gamepad.isPressed("RT")) &&
-      this.x + this.width / 2 <= Game.app.view.width
-    ) {
-      this.move(this.speed.x * delta, 0);
+    const toRight = (Game.keyboard.isKeyDown("KeyD", "ArrowRight") || Game.gamepad.isPressed("RT"));
+    const toLeft = (Game.keyboard.isKeyDown("KeyA", "ArrowLeft") || Game.gamepad.isPressed("LT"));
+    const isKeyDown = toRight || toLeft;
+    const isRightBound = this.x + this.width / 2 >= Game.app.view.width;
+    const isLeftBound = this.x - this.width / 2 <= 0;
+
+    if (isRightBound || isLeftBound) {
+      this.velocity.x = 0;
+    }
+    
+    if (toRight && !isRightBound && this.velocity.x <= Player.MAX_VELOCITY.x) {
+      this.direction.x = 1.0;
+      this.velocity.x = 0.0;
+      this.velocity.x += this.speed.x * this.direction.x;
+    }
+    
+    if (toLeft && !isLeftBound && this.velocity.x >= -Player.MAX_VELOCITY.x) {
+      this.direction.x = -1.0;
+      this.velocity.x = 0.0;
+      this.velocity.x += this.speed.x * this.direction.x;
+    }
+    
+    if (!isKeyDown && this.direction.x > 0 && this.velocity.x >= 0.1) {
+      this.velocity.x -= Player.FRICTION_VEC.x;
+    }
+    
+    if (!isKeyDown && this.direction.x < 0 && this.velocity.x <= -0.1) {
+      this.velocity.x += Player.FRICTION_VEC.x;
     }
 
-    if (
-      (Game.keyboard.isKeyDown("KeyA", "ArrowLeft") || Game.gamepad.isPressed("LT")) &&
-      this.x - this.width / 2 >= 0
-    ) {
-      this.move(this.speed.x * delta * -1, 0);
-    }
+    this.move(this.velocity.x * delta, 0);
   }
 
   reset() {
