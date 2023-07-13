@@ -8,6 +8,7 @@ import Sys from "./systems";
 import State from "./state";
 import Vector2 from "./vector";
 import Score from "./score";
+import Input from "./Input";
 
 class Scene {
   constructor() {
@@ -100,24 +101,13 @@ class Game {
 
     Game.app.ticker.add(function() {
       Keyboard.update();
-      
-      if (Keyboard.isKeyDown('Escape')) {
-        Game.app.pause.setState(true);
-      }
-      
-      if (Keyboard.isKeyDown('Enter')) {
-        Game.app.pause.setState(false);
-      }
-    });
-    
-    Game.app.ticker.add(function() {
       Controller.update();
       
-      if (Controller.isPressed('options2')) {
+      if (Input.isKeyDown('pause')) {
         Game.app.pause.setState(true);
       }
       
-      if (Controller.isPressed('A')) {
+      if (Input.isKeyDown('resume')) {
         Game.app.pause.setState(false);
       }
     });
