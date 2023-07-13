@@ -1,5 +1,5 @@
 import Events from 'nom-events'
-import Game from './main';
+import Controller from './gamepad';
 
 class Keyboard {
 	constructor() {
@@ -77,7 +77,7 @@ const keyboard = new Keyboard();
 window.addEventListener(
   "keydown", (event) => {
     // disable gamepad when the keyboard is active.
-    Game.gamepad.settings.active = false;
+   Controller.settings.active = false;
     if (!keyboard.keyStates.get(event.code)) {
       keyboard.keyStates.set(event.code, event);
       keyboard.events.call('pressed', event.code, event);

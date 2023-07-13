@@ -1,6 +1,6 @@
 import { Application, BlurFilter } from "pixi.js";
-import KeyboardInput from "./keyboard";
-import GamepadInput from "./gamepad";
+import Keyboard from "./keyboard";
+import Controller from "./gamepad";
 import NPCPlayer from "./npcplayer";
 import Player from "./player";
 import Pong from "./pong";
@@ -70,9 +70,6 @@ class Game {
 
   static app = new App();
   static scene = new Scene();
-  static keyboard = KeyboardInput;
-  static gamepad = GamepadInput;
-  static systems = Sys;
   static score = new Score(0);
 
   constructor() {
@@ -94,40 +91,40 @@ class Game {
       color: '#ebe834',
     }));
 
-    Game.systems.init();
-    Game.gamepad.scan();
+    Sys.init();
+    Controller.scan();
 
     Game.app.ticker.add(function(delta) {
       Game.scene.render(delta);
     });
 
     Game.app.ticker.add(function() {
-      Game.keyboard.update();
+      Keyboard.update();
       
-      if (Game.keyboard.isKeyDown('Escape')) {
+      if (Keyboard.isKeyDown('Escape')) {
         Game.app.pause.setState(true);
       }
       
-      if (Game.keyboard.isKeyDown('Enter')) {
+      if (Keyboard.isKeyDown('Enter')) {
         Game.app.pause.setState(false);
       }
     });
     
     Game.app.ticker.add(function() {
-      Game.gamepad.update();
+      Controller.update();
       
-      if (Game.gamepad.isPressed('options2')) {
+      if (Controller.isPressed('options2')) {
         Game.app.pause.setState(true);
       }
       
-      if (Game.gamepad.isPressed('A')) {
+      if (Controller.isPressed('A')) {
         Game.app.pause.setState(false);
       }
     });
 
     Game.app.ticker.add(function(delta) {
       if (Game.app.running()) {
-        Game.systems.execute(delta);
+        Sys.execute(delta);
       }
     });
 

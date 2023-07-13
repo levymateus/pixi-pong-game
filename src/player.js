@@ -2,6 +2,7 @@ import Game from "./main";
 import Paddle from "./paddle";
 import { sound } from "@pixi/sound";
 import Vector2 from "./vector";
+import Input from "./Input";
 
 export default class Player extends Paddle {
   
@@ -17,9 +18,9 @@ export default class Player extends Paddle {
   }
 
   update(delta) {
-    const toRight = (Game.keyboard.isKeyDown("KeyD", "ArrowRight") || Game.gamepad.isPressed("RT"));
-    const toLeft = (Game.keyboard.isKeyDown("KeyA", "ArrowLeft") || Game.gamepad.isPressed("LT"));
-    const isKeyDown = toRight || toLeft;
+    const isPlayerMoveRight = Input.isKeyDown('player_move_right');
+    const isPlayerMoveLeft = Input.isKeyDown('player_move_left');
+    const isKeyDown = isPlayerMoveRight || isPlayerMoveLeft;
     const isRightBound = this.x + this.width / 2 >= Game.app.view.width;
     const isLeftBound = this.x - this.width / 2 <= 0;
 
@@ -27,13 +28,13 @@ export default class Player extends Paddle {
       this.velocity.x = 0;
     }
     
-    if (toRight && !isRightBound && this.velocity.x <= Player.MAX_VELOCITY.x) {
+    if (isPlayerMoveRight && !isRightBound && this.velocity.x <= Player.MAX_VELOCITY.x) {
       this.direction.x = 1.0;
       this.velocity.x = 0.0;
       this.velocity.x += this.speed.x * this.direction.x;
     }
     
-    if (toLeft && !isLeftBound && this.velocity.x >= -Player.MAX_VELOCITY.x) {
+    if (isPlayerMoveLeft && !isLeftBound && this.velocity.x >= -Player.MAX_VELOCITY.x) {
       this.direction.x = -1.0;
       this.velocity.x = 0.0;
       this.velocity.x += this.speed.x * this.direction.x;
@@ -59,7 +60,7 @@ export default class Player extends Paddle {
     this.speed.x += 0.01;
     this.speed.y += 0.01;
     sound.play("hanging");
-    Game.gamepad.vibrate("dual-rumble", {
+    Input.controllerVibrate("dual-rumble", {
       startDelay: 0,
       duration: 200,
       weakMagnitude: 0.1,
