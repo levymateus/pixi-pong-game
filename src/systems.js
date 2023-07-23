@@ -65,7 +65,7 @@ class Player2System {
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
       circle.x = Main.app.view.width / 2;
       circle.y = Main.app.view.height / 2;
-      Main.app.pause.from(Player2System).setState(true);
+      Main.app.store.setState('pause', true, Player2System);
     }
 
     if (circle.x + player.width / 2 <= Main.app.view.width && circle.x - player.width / 2 >= 0) {

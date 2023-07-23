@@ -83,12 +83,12 @@ export class UIMainMenu extends LitElement {
         this.requestUpdate();
       }
     };
-    Main.app.pause.subscribe(this.handleClose);
+    Main.app.store.subscribe('pause', this.handleClose);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    Main.app.pause.unsubscribe(this.handleClose);
+    Main.app.store.unsubscribe('pause', this.handleClose);
   }
 
   open() {
@@ -100,7 +100,7 @@ export class UIMainMenu extends LitElement {
   close() {
     this.classes.open = false;
     this.classes.closed = !this.classes.open;
-    Main.app.pause.from(this).setState(false);
+    Main.app.store.setState('pause', false, this);
     this.requestUpdate();
   }
 

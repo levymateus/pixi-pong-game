@@ -41,11 +41,11 @@ class Main {
       Controller.update();
       
       if (Input.isKeyDown('pause')) {
-        Main.app.pause.setState(true);
+        Main.app.store.setState('pause', true, Main);
       }
       
       if (Input.isKeyDown('resume')) {
-        Main.app.pause.setState(false);
+        Main.app.store.setState('pause', false, Main);
       }
     });
 
@@ -63,7 +63,7 @@ class Main {
   }
 
   static pause() {
-    Main.app.pause.setState(true);
+    Main.app.store.setState('pause', true, Main);
   }
 }
 

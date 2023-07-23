@@ -1,5 +1,5 @@
 import { Application, BlurFilter } from "pixi.js";
-import State from "./state";
+import Store from "./store";
 
 export default class App extends Application {
   constructor() {
@@ -14,21 +14,22 @@ export default class App extends Application {
     if (root) {
       root.appendChild(this.view);
     }
-    this.pause = new State('pause', true);
+    this.store = new Store();
 
     const blur = new BlurFilter(20);
     self.stage.filters = [blur];
 
-    this.pause.subscribe(function(paused) {
+    this.store.subscribe('pause', function(paused) {
       if (!paused) {
         self.stage.filters = [];
       } else {
         self.stage.filters = [blur];
       }
     });
+    this.store.setState('pause', true, this);
   }
 
   running() {
-    return this.pause.equal(false);
+    return !this.store.getState('pause');
   }
 }
