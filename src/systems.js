@@ -1,6 +1,6 @@
 import Game from "./main";
 import intersects from "./intersects";
-import Log from "./log";
+import Bounds from "./bounds";
 
 class CollisionSystem {
   constructor() {
@@ -8,8 +8,10 @@ class CollisionSystem {
   }
 
   execute() {
+    const bounds = new Bounds()
     const circle = Game.scene.find('pong');
     const players = Game.scene.query('player', 'npcplayer');
+
     players.forEach((player) => {
       const isCollide = intersects(circle, player);
       if (isCollide && this.lastCollision != player) {
@@ -18,6 +20,16 @@ class CollisionSystem {
         this.lastCollision = player;
       }
     });
+
+    if (circle.x >= Game.app.view.width) {
+      circle.onCollide(bounds);
+      this.lastCollision = bounds;
+    }
+
+    if (circle.x <= 0) {
+      circle.onCollide(bounds);
+      this.lastCollision = bounds;
+    }
   }
 }
 
@@ -62,13 +74,26 @@ class Player2System {
   }
 }
 
-class Systems {
-  static systems = [CollisionSystem, PongSystem, Player2System]
-
+class ParticlesSystem {
   constructor() {
-    if (this instanceof Systems) {
-      throw Error('A static class cannot be instantiated.');
-    }
+    this.emmiters = [];
+  }
+  
+  execute() {
+    const container = this.emmiters.map(emmiter => Game.app.stage.getChildByName(emmiter.name));
+    const children = container.reduce((prev, curr) => [...prev, ...curr.children], []);
+    children.forEach((particle) => {
+      particle.update();
+    });
+  }
+}
+
+class Systems {
+  static systems = [CollisionSystem, PongSystem, Player2System, ParticlesSystem]
+
+  static registerEmmiter(emmiter) {
+    const sys = Systems.systems.find((s) => s instanceof ParticlesSystem);
+    sys.emmiters.push(emmiter);
   }
 
   static init() {
@@ -81,7 +106,5 @@ class Systems {
     Systems.systems.forEach((sys) => sys.execute(delta));
   }
 }
-
-
 
 export default Systems;

@@ -1,4 +1,4 @@
-import { Application, BlurFilter } from "pixi.js";
+import { Application, BlurFilter, Container } from "pixi.js";
 import Keyboard from "./keyboard";
 import Controller from "./gamepad";
 import NPCPlayer from "./npcplayer";
@@ -73,14 +73,11 @@ class Game {
   static scene = new Scene();
   static score = new Score(0);
 
-  constructor() {
-    if (this instanceof Game) {
-      throw Error('A static class cannot be instantiated.');
-    }
-  }
-
   static play() {
 
+    Sys.init();
+    Controller.scan();
+    
     Game.scene.append(new Player(Game.app.view.width / 2, Game.app.view.height - 30));
     Game.scene.append(new NPCPlayer(Game.app.view.width / 2, 60));
     Game.scene.append(new Pong({
@@ -91,10 +88,7 @@ class Game {
       speed: new Vector2(0.0, 3.0),
       color: '#ebe834',
     }));
-
-    Sys.init();
-    Controller.scan();
-
+    
     Game.app.ticker.add(function(delta) {
       Game.scene.render(delta);
     });

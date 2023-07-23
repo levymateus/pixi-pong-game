@@ -55,7 +55,7 @@ export default class Player extends Paddle {
     this.x = Game.app.view.width / 2;
   }
 
-  onCollide() {
+  onCollide(collisor) {
     Game.score.increment(1);
     this.speed.x += 0.01;
     this.speed.y += 0.01;
@@ -66,5 +66,6 @@ export default class Player extends Paddle {
       weakMagnitude: 0.1,
       strongMagnitude: 0.5,
     });
+    collisor.explode();
   }
 }

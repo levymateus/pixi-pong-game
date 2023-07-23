@@ -2,6 +2,9 @@ import { Circle, Graphics } from "pixi.js";
 import { random } from "./utils";
 import Vector2 from "./vector";
 import Game from "./main";
+import Emmiter from "./emmiter";
+import { sound } from "@pixi/sound";
+import texture from "../assets/particle.png";
 
 class Pong extends Circle {
   constructor({ id, x, y, speed = new Vector2(0, 0), radius = 20, color = '#ffff' }) {
@@ -11,10 +14,17 @@ class Pong extends Circle {
     this.speed = speed;
     this.gr = new Graphics();
     this.color = color;
-    this.energy = 0.8;
     this.visible = true;
     this.collides = null;
     this.value = 5;
+    this.emmiter = new Emmiter({ 
+      count: 3,
+      name: this.id,
+      texture: texture,
+      speed: 8,
+      gravity: 0.09,
+      friction: 0.98,
+    });
     Game.app.stage.addChild(this.gr);
   }
 
@@ -46,9 +56,17 @@ class Pong extends Circle {
     this.move(this.speed.x * delta, this.speed.y * delta);
   }
 
-  onCollide() {
-    this.speed.y = this.speed.y * -1;
-    this.speed.x = random(-3, 3);
+  explode() {
+    this.emmiter.createExplosion(this.x, this.y);
+  }
+
+  onCollide(collision) {
+    if (collision.id !== 'bounds') {
+      this.speed.y = this.speed.y * -1;
+      this.speed.x = random(-3, 3);
+    }
+    sound.play("hanging");
+    this.explode();
   }
 }
 
