@@ -1,71 +1,14 @@
-import { Application, BlurFilter, Container } from "pixi.js";
 import Keyboard from "./keyboard";
 import Controller from "./gamepad";
 import NPCPlayer from "./npcplayer";
 import Player from "./player";
 import Pong from "./pong";
 import Sys from "./systems";
-import State from "./state";
 import Vector2 from "./vector";
 import Score from "./score";
 import Input from "./Input";
-
-class Scene {
-  constructor() {
-    this.children = [];
-  }
-
-  append(node) {
-    this.children.push(node);
-  }
-
-  find(id) {
-    return this.children.find(node => node.id === id);
-  }
-
-  query(...id) {
-    return this.children.filter(node => id.filter(i => node.id === i).length);
-  }
-
-  render(delta) {
-    this.children.forEach((node) => {
-      if (Game.app.running()) {
-        node.update(delta);
-      }
-      node.render(delta);
-    });
-  }
-}
-
-class App extends Application {
-  constructor() {
-    super({
-      width: 3 * 2 * 100,
-      height: 4 * 2 * 100,
-      backgroundColor: '#011036',
-      autoStart: false
-    });
-    const self = this;
-    const root = document.getElementById('app');
-    if (root) {
-      root.appendChild(this.view);
-    }
-    this.pause = new State('pause', true);
-    self.stage.filters = [new BlurFilter(20)];
-
-    this.pause.subscribe(function(data) {
-      if (!data) {
-        self.stage.filters = [];
-      } else {
-        self.stage.filters = [new BlurFilter(20)];
-      }
-    });
-  }
-
-  running() {
-    return this.pause.equal(false);
-  }
-}
+import Scene from "./scene";
+import App from "./app";
 
 class Game {
 
