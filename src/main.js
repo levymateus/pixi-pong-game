@@ -10,7 +10,7 @@ import Input from "./Input";
 import Scene from "./scene";
 import App from "./app";
 
-class Game {
+class Main {
 
   static app = new App();
   static scene = new Scene();
@@ -21,50 +21,50 @@ class Game {
     Sys.init();
     Controller.scan();
     
-    Game.scene.append(new Player(Game.app.view.width / 2, Game.app.view.height - 30));
-    Game.scene.append(new NPCPlayer(Game.app.view.width / 2, 60));
-    Game.scene.append(new Pong({
+    Main.scene.append(new Player(Main.app.view.width / 2, Main.app.view.height - 30));
+    Main.scene.append(new NPCPlayer(Main.app.view.width / 2, 60));
+    Main.scene.append(new Pong({
       id: 'pong',
-      x: Game.app.view.width / 2,
-      y: Game.app.view.height / 2,
+      x: Main.app.view.width / 2,
+      y: Main.app.view.height / 2,
       radius: 8,
       speed: new Vector2(0.0, 3.0),
       color: '#ebe834',
     }));
     
-    Game.app.ticker.add(function(delta) {
-      Game.scene.render(delta);
+    Main.app.ticker.add(function(delta) {
+      Main.scene.render(delta);
     });
 
-    Game.app.ticker.add(function() {
+    Main.app.ticker.add(function() {
       Keyboard.update();
       Controller.update();
       
       if (Input.isKeyDown('pause')) {
-        Game.app.pause.setState(true);
+        Main.app.pause.setState(true);
       }
       
       if (Input.isKeyDown('resume')) {
-        Game.app.pause.setState(false);
+        Main.app.pause.setState(false);
       }
     });
 
-    Game.app.ticker.add(function(delta) {
-      if (Game.app.running()) {
+    Main.app.ticker.add(function(delta) {
+      if (Main.app.running()) {
         Sys.execute(delta);
       }
     });
 
-    Game.app.start();
+    Main.app.start();
   }
 
   static stop() {
-    Game.app.ticker.remove(Game.scene.render);
+    Main.app.ticker.remove(Main.scene.render);
   }
 
   static pause() {
-    Game.app.pause.setState(true);
+    Main.app.pause.setState(true);
   }
 }
 
-export default Game;
+export default Main;

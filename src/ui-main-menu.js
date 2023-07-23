@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import Game from "./main";
+import Main from "./main";
 
 export class UIMainMenu extends LitElement {
   static properties = {
@@ -83,12 +83,12 @@ export class UIMainMenu extends LitElement {
         this.requestUpdate();
       }
     };
-    Game.app.pause.subscribe(this.handleClose);
+    Main.app.pause.subscribe(this.handleClose);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    Game.app.pause.unsubscribe(this.handleClose);
+    Main.app.pause.unsubscribe(this.handleClose);
   }
 
   open() {
@@ -100,7 +100,7 @@ export class UIMainMenu extends LitElement {
   close() {
     this.classes.open = false;
     this.classes.closed = !this.classes.open;
-    Game.app.pause.from(this).setState(false);
+    Main.app.pause.from(this).setState(false);
     this.requestUpdate();
   }
 

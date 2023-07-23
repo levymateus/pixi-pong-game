@@ -1,4 +1,4 @@
-import Game from "./main";
+import Main from "./main";
 import Paddle from "./paddle";
 import { sound } from "@pixi/sound";
 import Vector2 from "./vector";
@@ -21,7 +21,7 @@ export default class Player extends Paddle {
     const isPlayerMoveRight = Input.isKeyDown('player_move_right');
     const isPlayerMoveLeft = Input.isKeyDown('player_move_left');
     const isKeyDown = isPlayerMoveRight || isPlayerMoveLeft;
-    const isRightBound = this.x + this.width / 2 >= Game.app.view.width;
+    const isRightBound = this.x + this.width / 2 >= Main.app.view.width;
     const isLeftBound = this.x - this.width / 2 <= 0;
 
     if (isRightBound || isLeftBound) {
@@ -52,11 +52,11 @@ export default class Player extends Paddle {
   }
 
   reset() {
-    this.x = Game.app.view.width / 2;
+    this.x = Main.app.view.width / 2;
   }
 
   onCollide(collisor) {
-    Game.score.increment(1);
+    Main.score.increment(1);
     this.speed.x += 0.01;
     this.speed.y += 0.01;
     sound.play("hanging");

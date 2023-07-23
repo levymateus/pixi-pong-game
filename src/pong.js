@@ -1,7 +1,7 @@
 import { Circle, Graphics } from "pixi.js";
 import { random } from "./utils";
 import Vector2 from "./vector";
-import Game from "./main";
+import Main from "./main";
 import Emmiter from "./emmiter";
 import { sound } from "@pixi/sound";
 import texture from "../assets/particle.png";
@@ -25,7 +25,7 @@ class Pong extends Circle {
       gravity: 0.09,
       friction: 0.98,
     });
-    Game.app.stage.addChild(this.gr);
+    Main.app.stage.addChild(this.gr);
   }
 
   move(x, y) {

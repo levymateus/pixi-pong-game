@@ -1,4 +1,4 @@
-import Game from "./main";
+import Main from "./main";
 
 export default class Scene {
   constructor() {
@@ -19,7 +19,7 @@ export default class Scene {
 
   render(delta) {
     this.children.forEach((node) => {
-      if (Game.app.running()) {
+      if (Main.app.running()) {
         node.update(delta);
       }
       node.render(delta);

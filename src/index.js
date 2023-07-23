@@ -1,11 +1,11 @@
 import "./ui"
 import "./assets"
-import Game from "./main"
+import Main from "./main"
 
 window.onload = function() {
-  Game.play();
+  Main.play();
 }
 
 window.onblur = function() {
-  Game.pause();
+  Main.pause();
 }
