@@ -1,6 +1,7 @@
 import Main from "./main";
 import intersects from "./intersects";
 import Bounds from "./bounds";
+import Vector2 from "./vector";
 
 class CollisionSystem {
   constructor() {
@@ -36,13 +37,34 @@ class CollisionSystem {
 class PongSystem {
   constructor() {}
 
-  execute() {
+  gameover() {
     const player = Main.scene.find('player');
+    player.reset();
+    Main.score.reset();
+    Main.app.store.setState('speed', new Vector2(1, 1), PongSystem);
+    Main.app.store.setState('lifes', 3, PongSystem);
+    Main.app.store.setState('pause', true, PongSystem);
+  }
+
+  execute() {
     const circle = Main.scene.find('pong');
+    const lifes = Main.app.store.getState('lifes');
 
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
-      Main.score.reset();
-      player.reset();
+
+      Main.app.store.setState('lifes', lifes - 1);
+      circle.reset();
+      
+      if (Main.app.store.getState('lifes') <= 0) {
+        this.gameover();
+      }
+
+      if (Main.score.value - Main.score.value * 0.1 <= 0) {
+        this.gameover();
+      } else {
+        Main.score.increment(-Main.score.value * 0.1);
+      }
+      
     }
 
     if (circle.x >= Main.app.view.width) {

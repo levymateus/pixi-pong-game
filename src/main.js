@@ -16,6 +16,11 @@ class Main {
   static scene = new Scene();
   static score = new Score(0);
 
+  static init() {
+    Main.app.store.setState('speed', new Vector2(1, 1));
+    Main.app.store.setState('lifes', 3);
+  }
+
   static play() {
 
     Sys.init();

@@ -11,7 +11,14 @@ class Pong extends Circle {
     super(x, y, radius);
     this.id = id;
     this.position = new Vector2(x, y);
-    this.speed = speed;
+
+    const globalSpeed = Main.app.store.getState('speed');
+    this.speed = new Vector2(speed.x * globalSpeed.x, speed.y * globalSpeed.y);
+
+    this.default = {
+      position: { x, y },
+    }
+
     this.gr = new Graphics();
     this.color = color;
     this.visible = true;
@@ -52,8 +59,16 @@ class Pong extends Circle {
     }
   }
 
+  reset() {
+    this.x = this.default.position.x;
+    this.y = this.default.position.y;
+    this.position.x = this.x;
+    this.position.y = this.y;
+  }
+
   update(delta) {
-    this.move(this.speed.x * delta, this.speed.y * delta);
+    const globalSpeed = Main.app.store.getState('speed');
+    this.move(this.speed.x * globalSpeed.x * delta, this.speed.y * globalSpeed.y * delta);
   }
 
   explode() {

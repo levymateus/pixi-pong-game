@@ -27,11 +27,11 @@ export class UIScore extends LitElement {
       if (this.value) {
         this.classes.hidden = false;
       }
-      this.bestScore = Main.score.getBestScore();
       this.requestUpdate();
     }
     this.handleScoreReset = () => {
       this.value = 0;
+      this.bestScore = Main.score.getBestScore();
       this.requestUpdate();
     }
   }

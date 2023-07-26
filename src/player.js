@@ -7,7 +7,7 @@ import Input from "./Input";
 export default class Player extends Paddle {
   
   static MAX_VELOCITY = new Vector2(8.0, 0);
-  static FRICTION_VEC = new Vector2(0.08, 0);
+  static FRICTION_VEC = new Vector2(0.23, 0);
 
   constructor(x, y) {
     super({ id: "player", x, y, width: 120, height: 30, color: "#3443eb" });
@@ -48,7 +48,8 @@ export default class Player extends Paddle {
       this.velocity.x += Player.FRICTION_VEC.x;
     }
 
-    this.move(this.velocity.x * delta, 0);
+    const globalSpeed = Main.app.store.getState('speed');
+    this.move(this.velocity.x * globalSpeed.x * delta, 0);
   }
 
   reset() {
@@ -56,9 +57,7 @@ export default class Player extends Paddle {
   }
 
   onCollide(collisor) {
-    Main.score.increment(1);
-    this.speed.x += 0.01;
-    this.speed.y += 0.01;
+    Main.score.increment(1000);
     sound.play("hanging");
     Input.controllerVibrate("dual-rumble", {
       startDelay: 0,
@@ -67,5 +66,11 @@ export default class Player extends Paddle {
       strongMagnitude: 0.5,
     });
     collisor.explode();
+    const globalSpeed = Main.app.store.getState('speed');
+    const step = Math.sqrt(Main.score.value) / 10000;
+    const speed = new Vector2(globalSpeed.x + step, globalSpeed.y + step);
+    this.speed.x += step;
+    this.speed.y += step;
+    Main.app.store.setState('speed', speed);
   }
 }
