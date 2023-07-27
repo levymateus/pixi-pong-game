@@ -10,7 +10,6 @@ export class UICountdown extends LitElement {
   static styles = css`
     :host {
       position: absolute;
-      height: 100%;
       top: 50%;
       left: 50%;
     }
