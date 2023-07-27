@@ -53,18 +53,18 @@ class PongSystem {
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
 
       Main.app.store.set('lifes', lifes - 1);
-      circle.resetAfter(3);
 
       if (Main.app.store.get('lifes') <= 0) {
-        this.gameover();
+        return this.gameover();
       }
 
       if (Main.score.value - Main.score.value * 0.1 <= 0) {
-        this.gameover();
+        return this.gameover();
       } else {
         Main.score.increment(-Main.score.value * 0.1);
       }
 
+      circle.resetAfter(3);
     }
 
     if (circle.x >= Main.app.view.width) {
