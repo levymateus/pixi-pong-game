@@ -1,6 +1,6 @@
 import { Graphics, Rectangle } from "pixi.js";
 import Vector2 from "./vector";
-import Game from "./main";
+import Main from "./main";
 
 export default class Paddle extends Rectangle {
   constructor({ id, x, y, width, height, color = "#fff" }) {
@@ -10,7 +10,7 @@ export default class Paddle extends Rectangle {
     this.speed = new Vector2(0, 0);
     this.color = color;
     this.visible = true;
-    Game.app.stage.addChild(this.gr);
+    Main.app.stage.addChild(this.gr);
   }
 
   move(x, y) {

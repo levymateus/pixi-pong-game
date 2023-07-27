@@ -1,6 +1,7 @@
-import Game from "./main";
+import Main from "./main";
 import intersects from "./intersects";
 import Bounds from "./bounds";
+import Vector2 from "./vector";
 
 class CollisionSystem {
   constructor() {
@@ -9,8 +10,8 @@ class CollisionSystem {
 
   execute() {
     const bounds = new Bounds()
-    const circle = Game.scene.find('pong');
-    const players = Game.scene.query('player', 'npcplayer');
+    const circle = Main.scene.find('pong');
+    const players = Main.scene.query('player', 'npcplayer');
 
     players.forEach((player) => {
       const isCollide = intersects(circle, player);
@@ -21,7 +22,7 @@ class CollisionSystem {
       }
     });
 
-    if (circle.x >= Game.app.view.width) {
+    if (circle.x >= Main.app.view.width) {
       circle.onCollide(bounds);
       this.lastCollision = bounds;
     }
@@ -36,16 +37,37 @@ class CollisionSystem {
 class PongSystem {
   constructor() {}
 
-  execute() {
-    const player = Game.scene.find('player');
-    const circle = Game.scene.find('pong');
+  gameover() {
+    const player = Main.scene.find('player');
+    player.reset();
+    Main.score.reset();
+    Main.app.store.setState('speed', new Vector2(1, 1), PongSystem);
+    Main.app.store.setState('lifes', 3, PongSystem);
+    Main.app.store.setState('pause', true, PongSystem);
+  }
 
-    if (circle.y >= Game.app.view.height || circle.y <= 0) {
-      Game.score.reset();
-      player.reset();
+  execute() {
+    const circle = Main.scene.find('pong');
+    const lifes = Main.app.store.getState('lifes');
+
+    if (circle.y >= Main.app.view.height || circle.y <= 0) {
+
+      Main.app.store.setState('lifes', lifes - 1);
+      circle.reset();
+      
+      if (Main.app.store.getState('lifes') <= 0) {
+        this.gameover();
+      }
+
+      if (Main.score.value - Main.score.value * 0.1 <= 0) {
+        this.gameover();
+      } else {
+        Main.score.increment(-Main.score.value * 0.1);
+      }
+      
     }
 
-    if (circle.x >= Game.app.view.width) {
+    if (circle.x >= Main.app.view.width) {
       circle.speed.x = 3.0 * -1;
     }
 
@@ -59,16 +81,16 @@ class Player2System {
   constructor() { }
 
   execute() {
-    const player = Game.scene.find('npcplayer');
-    const circle = Game.scene.find('pong');
+    const player = Main.scene.find('npcplayer');
+    const circle = Main.scene.find('pong');
 
-    if (circle.y >= Game.app.view.height || circle.y <= 0) {
-      circle.x = Game.app.view.width / 2;
-      circle.y = Game.app.view.height / 2;
-      Game.app.pause.from(Player2System).setState(true);
+    if (circle.y >= Main.app.view.height || circle.y <= 0) {
+      circle.x = Main.app.view.width / 2;
+      circle.y = Main.app.view.height / 2;
+      Main.app.store.setState('pause', true, Player2System);
     }
 
-    if (circle.x + player.width / 2 <= Game.app.view.width && circle.x - player.width / 2 >= 0) {
+    if (circle.x + player.width / 2 <= Main.app.view.width && circle.x - player.width / 2 >= 0) {
       player.x = circle.x;
     }
   }
@@ -80,7 +102,7 @@ class ParticlesSystem {
   }
   
   execute() {
-    const container = this.emmiters.map(emmiter => Game.app.stage.getChildByName(emmiter.name));
+    const container = this.emmiters.map(emmiter => Main.app.stage.getChildByName(emmiter.name));
     const children = container.reduce((prev, curr) => [...prev, ...curr.children], []);
     children.forEach((particle) => {
       particle.update();

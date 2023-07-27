@@ -17,6 +17,7 @@ export class UITopbar extends LitElement {
     return html`
       <header>
         <ui-score></ui-score>
+        <ui-health></ui-health>
       </header>
     `;
   }

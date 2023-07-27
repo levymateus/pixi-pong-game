@@ -1,6 +1,6 @@
 import { Container, Sprite, Assets } from "pixi.js";
 import Sys from "./systems";
-import Game from "./main";
+import Main from "./main";
 
 export default class Emmiter {
   constructor({ name, count, texture, speed, gravity, friction }) {
@@ -12,13 +12,13 @@ export default class Emmiter {
     this.texture = Assets.load(texture);
     const container = new Container();
     container.name = this.name;
-    Game.app.stage.addChild(container);
+    Main.app.stage.addChild(container);
     Sys.registerEmmiter(this);
   }
   
   async createExplosion(x, y) {
     const emmiter = this;
-    const container = Game.app.stage.getChildByName(this.name);
+    const container = Main.app.stage.getChildByName(this.name);
     const texture = await this.texture;
 
     function createParticle() {

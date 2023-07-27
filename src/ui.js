@@ -1,6 +1,7 @@
 import "./ui-tobar";
 import "./ui-score";
 import "./ui-main-menu";
+import "./ui-health";
 
 import { LitElement, css, html } from 'lit';
 

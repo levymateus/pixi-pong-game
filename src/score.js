@@ -10,14 +10,14 @@ export default class Score extends PubSub {
   }
 
   increment(value) {
-    this.value += value || 1;
+    this.value += parseInt(value);
+    this.notify('increment', this.value, this.notifier);
+  }
+  
+  reset() {
     if (this.value > this.getBestScore()) {
       localStorage.setItem('pixi-pong-best-score', this.value);
     }
-    this.notify('increment', this.value, this.notifier);
-  }
-
-  reset() {
     this.value = 0;
     this.notify('reset', 0, this.notifier);
   }
