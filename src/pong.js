@@ -5,6 +5,7 @@ import Main from "./main";
 import Emmiter from "./emmiter";
 import { sound } from "@pixi/sound";
 import texture from "../assets/particle.png";
+import Timer from "./timer";
 
 class Pong extends Circle {
   constructor({ id, x, y, speed = new Vector2(0, 0), radius = 20, color = '#ffff' }) {
@@ -19,11 +20,14 @@ class Pong extends Circle {
       position: { x, y },
     }
 
+    this.countdown = 0;
+    this.canMove = true;
     this.gr = new Graphics();
     this.color = color;
     this.visible = true;
     this.collides = null;
     this.value = 5;
+
     this.emmiter = new Emmiter({
       count: 3,
       name: this.id,
@@ -32,7 +36,19 @@ class Pong extends Circle {
       gravity: 0.09,
       friction: 0.98,
     });
+
     Main.app.stage.addChild(this.gr);
+
+    Timer.countdown(1,
+      null,
+      () => {
+        this.canMove = true;
+        this.x = this.default.position.x;
+        this.y = this.default.position.y;
+        this.position.x = this.x;
+        this.position.y = this.y;
+      }
+    )
   }
 
   move(x, y) {
@@ -59,16 +75,26 @@ class Pong extends Circle {
     }
   }
 
-  reset() {
-    this.x = this.default.position.x;
-    this.y = this.default.position.y;
-    this.position.x = this.x;
-    this.position.y = this.y;
+  resetAfter(countdown) {
+    this.canMove = false;
+    Timer.countdown(countdown,
+      (countdown) => { Main.app.store.set('countdown', countdown, this) },
+      () => {
+        this.canMove = true;
+        Main.app.store.set('countdown', 0, this);
+        this.x = this.default.position.x;
+        this.y = this.default.position.y;
+        this.position.x = this.x;
+        this.position.y = this.y;
+      }
+    )
   }
 
   update(delta) {
     const globalSpeed = Main.app.store.get('speed');
-    this.move(this.speed.x * globalSpeed.x * delta, this.speed.y * globalSpeed.y * delta);
+    if (this.canMove) {
+      this.move(this.speed.x * globalSpeed.x * delta, this.speed.y * globalSpeed.y * delta);
+    }
   }
 
   explode() {

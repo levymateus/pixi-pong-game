@@ -2,6 +2,7 @@ import "./ui-tobar";
 import "./ui-score";
 import "./ui-main-menu";
 import "./ui-health";
+import "./ui-countdown";
 
 import { LitElement, css, html } from 'lit';
 
@@ -27,6 +28,7 @@ export class UI extends LitElement {
     return html`
       <ui-topbar></ui-topbar>
       <ui-main-menu></ui-main-menu>
+      <ui-countdown></ui-countdown>
     `;
   }
 }

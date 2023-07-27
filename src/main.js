@@ -17,8 +17,9 @@ class Main {
   static score = new Score(0);
 
   static init() {
-    Main.app.store.set('speed', new Vector2(1, 1));
-    Main.app.store.set('lifes', 3);
+    Main.app.store.set('speed', new Vector2(1, 1), this);
+    Main.app.store.set('lifes', 3, this);
+    Main.app.store.set('countdown', 0, this);
   }
 
   static play() {

@@ -53,7 +53,7 @@ class PongSystem {
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
 
       Main.app.store.set('lifes', lifes - 1);
-      circle.reset();
+      circle.resetAfter(3);
 
       if (Main.app.store.get('lifes') <= 0) {
         this.gameover();
@@ -87,7 +87,6 @@ class Player2System {
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
       circle.x = Main.app.view.width / 2;
       circle.y = Main.app.view.height / 2;
-      Main.app.store.set('pause', true, Player2System);
     }
 
     if (circle.x + player.width / 2 <= Main.app.view.width && circle.x - player.width / 2 >= 0) {
