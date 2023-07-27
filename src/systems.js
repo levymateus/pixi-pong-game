@@ -41,21 +41,21 @@ class PongSystem {
     const player = Main.scene.find('player');
     player.reset();
     Main.score.reset();
-    Main.app.store.setState('speed', new Vector2(1, 1), PongSystem);
-    Main.app.store.setState('lifes', 3, PongSystem);
-    Main.app.store.setState('pause', true, PongSystem);
+    Main.app.store.set('speed', new Vector2(1, 1), PongSystem);
+    Main.app.store.set('lifes', 3, PongSystem);
+    Main.app.store.set('pause', true, PongSystem);
   }
 
   execute() {
     const circle = Main.scene.find('pong');
-    const lifes = Main.app.store.getState('lifes');
+    const lifes = Main.app.store.get('lifes');
 
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
 
-      Main.app.store.setState('lifes', lifes - 1);
+      Main.app.store.set('lifes', lifes - 1);
       circle.reset();
-      
-      if (Main.app.store.getState('lifes') <= 0) {
+
+      if (Main.app.store.get('lifes') <= 0) {
         this.gameover();
       }
 
@@ -64,7 +64,7 @@ class PongSystem {
       } else {
         Main.score.increment(-Main.score.value * 0.1);
       }
-      
+
     }
 
     if (circle.x >= Main.app.view.width) {
@@ -87,7 +87,7 @@ class Player2System {
     if (circle.y >= Main.app.view.height || circle.y <= 0) {
       circle.x = Main.app.view.width / 2;
       circle.y = Main.app.view.height / 2;
-      Main.app.store.setState('pause', true, Player2System);
+      Main.app.store.set('pause', true, Player2System);
     }
 
     if (circle.x + player.width / 2 <= Main.app.view.width && circle.x - player.width / 2 >= 0) {
@@ -100,7 +100,7 @@ class ParticlesSystem {
   constructor() {
     this.emmiters = [];
   }
-  
+
   execute() {
     const container = this.emmiters.map(emmiter => Main.app.stage.getChildByName(emmiter.name));
     const children = container.reduce((prev, curr) => [...prev, ...curr.children], []);

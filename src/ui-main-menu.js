@@ -100,7 +100,7 @@ export class UIMainMenu extends LitElement {
   close() {
     this.classes.open = false;
     this.classes.closed = !this.classes.open;
-    Main.app.store.setState('pause', false, this);
+    Main.app.store.set('pause', false, this);
     this.requestUpdate();
   }
 

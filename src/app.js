@@ -26,10 +26,10 @@ export default class App extends Application {
         self.stage.filters = [blur];
       }
     });
-    this.store.setState('pause', true, this);
+    this.store.set('pause', true, this);
   }
 
   running() {
-    return !this.store.getState('pause');
+    return !this.store.get('pause');
   }
 }

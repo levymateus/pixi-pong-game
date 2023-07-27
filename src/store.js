@@ -6,13 +6,13 @@ class Store extends PubSub {
     this.store = new Map();
   }
 
-  setState(key, value, notifier) {
+  set(key, value, notifier) {
     const v = typeof value === 'function' ? value(this.getState(key)) : value;
     this.store.set(key, v);
     this.notify(key, value, notifier || this);
   }
-
-  getState(key) {
+  
+  get(key) {
     return this.store.get(key);
   }
 

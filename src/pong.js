@@ -12,7 +12,7 @@ class Pong extends Circle {
     this.id = id;
     this.position = new Vector2(x, y);
 
-    const globalSpeed = Main.app.store.getState('speed');
+    const globalSpeed = Main.app.store.get('speed');
     this.speed = new Vector2(speed.x * globalSpeed.x, speed.y * globalSpeed.y);
 
     this.default = {
@@ -24,7 +24,7 @@ class Pong extends Circle {
     this.visible = true;
     this.collides = null;
     this.value = 5;
-    this.emmiter = new Emmiter({ 
+    this.emmiter = new Emmiter({
       count: 3,
       name: this.id,
       texture: texture,
@@ -67,7 +67,7 @@ class Pong extends Circle {
   }
 
   update(delta) {
-    const globalSpeed = Main.app.store.getState('speed');
+    const globalSpeed = Main.app.store.get('speed');
     this.move(this.speed.x * globalSpeed.x * delta, this.speed.y * globalSpeed.y * delta);
   }
 

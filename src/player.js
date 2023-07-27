@@ -5,7 +5,7 @@ import Vector2 from "./vector";
 import Input from "./Input";
 
 export default class Player extends Paddle {
-  
+
   static MAX_VELOCITY = new Vector2(8.0, 0);
   static FRICTION_VEC = new Vector2(0.23, 0);
 
@@ -27,28 +27,28 @@ export default class Player extends Paddle {
     if (isRightBound || isLeftBound) {
       this.velocity.x = 0;
     }
-    
+
     if (isPlayerMoveRight && !isRightBound && this.velocity.x <= Player.MAX_VELOCITY.x) {
       this.direction.x = 1.0;
       this.velocity.x = 0.0;
       this.velocity.x += this.speed.x * this.direction.x;
     }
-    
+
     if (isPlayerMoveLeft && !isLeftBound && this.velocity.x >= -Player.MAX_VELOCITY.x) {
       this.direction.x = -1.0;
       this.velocity.x = 0.0;
       this.velocity.x += this.speed.x * this.direction.x;
     }
-    
+
     if (!isKeyDown && this.direction.x > 0 && this.velocity.x >= 0.1) {
       this.velocity.x -= Player.FRICTION_VEC.x;
     }
-    
+
     if (!isKeyDown && this.direction.x < 0 && this.velocity.x <= -0.1) {
       this.velocity.x += Player.FRICTION_VEC.x;
     }
 
-    const globalSpeed = Main.app.store.getState('speed');
+    const globalSpeed = Main.app.store.get('speed');
     this.move(this.velocity.x * globalSpeed.x * delta, 0);
   }
 
@@ -66,11 +66,11 @@ export default class Player extends Paddle {
       strongMagnitude: 0.5,
     });
     collisor.explode();
-    const globalSpeed = Main.app.store.getState('speed');
+    const globalSpeed = Main.app.store.get('speed');
     const step = Math.sqrt(Main.score.value) / 10000;
     const speed = new Vector2(globalSpeed.x + step, globalSpeed.y + step);
     this.speed.x += step;
     this.speed.y += step;
-    Main.app.store.setState('speed', speed);
+    Main.app.store.set('speed', speed);
   }
 }
