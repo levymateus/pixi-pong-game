@@ -12,6 +12,10 @@ html {
 
 body {
   display: flex;
+  max-width: 1920px;
+  max-height: 1080px;
+  margin: auto;
+  background-repeat: no-repeat;
   background-image: url("assets/bg-fullhd.png");
 }
 
