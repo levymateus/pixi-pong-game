@@ -1,11 +1,13 @@
 {
   "name": "pixi-pong",
-  "version": "1.0.0",
+  "version": "v1.0.0-alpha",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@pixi/sound": "^5.1.1",
-    "lit": "^2.6.1",
+    "@pixi/assets": "^7.0.0",
+    "@pixi/core": "^7.0.0",
+    "@pixi/sound": "^5.2.1",
+    "lit": "^2.8.0",
     "nom-events": "^1.0.3",
     "pixi.js": "^7.2.4"
   },
